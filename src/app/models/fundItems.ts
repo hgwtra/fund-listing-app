@@ -6,10 +6,11 @@ export class FundItems {
     change3m: number = 0;
     change1y: number = 0;
     change3y: number = 0;
+    currency: string = '';
+    
 
     //What can potentially be used:
     // availableForMonthlySaving: boolean = false;
-    // currency: string = '';
     // documentLinks: string = '';
     // rate: number = 0;
     // yearHigh: number = 0;

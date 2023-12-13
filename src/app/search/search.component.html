@@ -1,0 +1,16 @@
+<!-- Search Function -->
+<h3 class="header">Find a fund:</h3>
+<div class="search-container">
+  <input
+    type="text"
+    id="search-bar"
+    placeholder="Enter a fund's name"
+    [(ngModel)]="searchedText"
+    (input)="onSearchChanged()"
+    class="search-input"
+  />
+
+  <!-- <img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png"> -->
+ 
+</div>
+

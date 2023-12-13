@@ -1,11 +1,47 @@
-<a *ngFor="let fund of funds">
-  <li>{{fund.fundName}}</li>
+<!-- Main title -->
+<h1 class="header">Funds Overview</h1>
 
-</a>
+<!-- Search Bar -->
+<app-search (searchedTextChanged)="onSearchEntered($event)"></app-search>
 
-<!-- Header: Funds
-Description: Funds Overview
-A search: Find a Fund, placeholder: Enter a fund name 
-A filter: Fund Type, placeholder: Select a fund type
-A table: Fund Name, Performance, currency, changes 
-Each row is clickable and will have a popup for more details or a dropdown. Inclduing inside: Fund name, tyoe, company, some more informations year high low with documents -->
+<!-- Filter By Fund Company -->
+<app-filter></app-filter>
+
+<!-- Main section -->
+<section class="wrapper">
+  <!-- Row title -->
+  <main class="row title">
+    <ul>
+      <li id="funds-name">Funds</li>
+      <li id="performance-1y">Performance (%)</li>
+      <li id="performance">1M</li>
+      <li id="performance">3M</li>
+      <li id="performance">3Y</li>
+      <li class="title-hide" id="performance">Currency</li>
+    </ul>
+  </main>
+
+  <!-- List of Funds -->
+  <article class="row nfl" *ngFor="let fund of funds | matchedFunds: searchedText">
+
+      <ul>
+        <li id="funds-name">{{ fund.fundName }}</li>
+        <li
+          id="performance-1y"
+          [ngClass]="{
+            'text-red': fund.change1y < 0,
+            'text-green': fund.change1y > 0
+          }"
+        >
+          {{ fund.change1y }}
+        </li>
+        <li id="performance">{{ fund.change1m }}</li>
+        <li id="performance">{{ fund.change3m }}</li>
+        <li id="performance">{{ fund.change3y }}</li>
+        <li class="title-hide" id="performance">{{ fund.currency }}</li>
+      </ul>
+      <ul class="more-content">
+        <li>Company: {{ fund.fundCompany }}</li>
+      </ul>
+  </article>
+</section>
