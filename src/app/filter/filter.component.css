@@ -1,0 +1,43 @@
+.header {
+  color: var(--light-bg);
+  display: flex;
+  justify-content: left;
+  margin-top: 50px;
+  font-weight: 300;
+}
+
+.filter-box {
+  position: relative;
+  height: 55px;
+  max-width: 1000px;
+  width: 50%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.filter-box#byCompanies {
+  margin-right: 20px;
+}
+.filter-box select {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  font-size: 18px;
+  font-weight: 400;
+  border: none;
+  padding: 0 0px 0 60px;
+  background-color: transparent;
+}
+
+.filter-row {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 30px;
+}
+
+option {
+  font-size: 18px;
+  font-weight: 300;
+}

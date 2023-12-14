@@ -84,7 +84,7 @@ export class FundListComponent {
     //console.log('searched text', this.searchedText);
   }
 
-  // Toggle 
+  // Toggle for dropdown
   toggleContent(index: number) {
     if (this.expandedIndex === index) {
       this.expandedIndex = -1;
