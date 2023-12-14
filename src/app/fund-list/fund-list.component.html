@@ -1,19 +1,20 @@
-<!-- Main title -->
-<h1 class="header">Funds Overview</h1>
-
-<!-- Search Bar -->
-<app-search (searchedTextChanged)="onSearchEntered($event)"></app-search>
-
-<!-- Filter By Fund Company -->
-<app-filter></app-filter>
-
 <!-- Main section -->
 <section class="wrapper">
+  <!-- Main title -->
+  <h1 class="header">Funds Overview</h1>
+  <hr />
+
+  <!-- Search Bar -->
+  <app-search (searchedTextChanged)="onSearchEntered($event)"></app-search>
+
+  <!-- Filter By Fund Company -->
+  <app-filter [funds]="funds"></app-filter>
+
   <!-- Row title -->
   <main class="row title">
     <ul>
       <li id="funds-name">Funds</li>
-      <li id="performance-1y">Performance (%)</li>
+      <li id="performance-1y">Performance (1Y)</li>
       <li id="performance">1M</li>
       <li id="performance">3M</li>
       <li id="performance">3Y</li>
@@ -22,26 +23,79 @@
   </main>
 
   <!-- List of Funds -->
-  <article class="row nfl" *ngFor="let fund of funds | matchedFunds: searchedText">
+  <article
+    class="row nfl"
+    *ngFor="let fund of funds | matchedFunds : searchedText; let i = index"
+  >
+    <ul>
+      <li id="funds-name">
+        <button (click)="toggleContent(i)" class="icon">
+          <ng-container *ngIf="expandedIndex !== i">
+            <i class="fa fa-solid fa-angle-right" style="color: #ffffff"></i>
+          </ng-container>
+          <ng-container *ngIf="expandedIndex === i">
+            <i class="fa fa-solid fa-angle-down" style="color: #ffffff"></i>
+          </ng-container>
+        </button>
+        {{ fund.fundName }}
+      </li>
+      <li
+        class="title-hide"
+        id="performance-1y"
+        [ngClass]="{
+          'text-red': fund.change1y < 0,
+          'text-green': fund.change1y > 0
+        }"
+      >
+        {{ fund.change1y }} %
+      </li>
+      <li id="performance">{{ fund.change1m }}</li>
+      <li id="performance">{{ fund.change3m }}</li>
+      <li id="performance">{{ fund.change3y }}</li>
+      <li class="title-hide" id="performance">{{ fund.currency }}</li>
+    </ul>
 
-      <ul>
-        <li id="funds-name">{{ fund.fundName }}</li>
-        <li
-          id="performance-1y"
-          [ngClass]="{
-            'text-red': fund.change1y < 0,
-            'text-green': fund.change1y > 0
-          }"
-        >
-          {{ fund.change1y }}
+    <!-- More information on fund -->
+    <ul class="more-content" *ngIf="expandedIndex === i">
+      <li>
+        <div class="label">Company:</div>
+        {{ fund.fundCompany }}
+      </li>
+      <li>
+        <div class="label">Type:</div>
+        {{ fund.fundType }}
+      </li>
+      <li>
+        <div class="label">Rate:</div>
+        {{ fund.rate }}%
+      </li>
+      <li>
+        <div class="label">Year High:</div>
+        {{ fund.yearHigh }}
+      </li>
+      <li>
+        <div class="label">Year Low:</div>
+        {{ fund.yearLow }}
+      </li>
+      <li>
+        <div class="label">Available for monthly saving?:</div>
+        <span *ngIf="fund.availableForMonthlySaving; else noOption">Yes</span>
+        <ng-template #noOption>No</ng-template>
+      </li>
+      <li><div class="label">More information:</div></li>
+      <ng-container
+        *ngIf="fund.documentLinks && fund.documentLinks.length > 0; else noInfo"
+      >
+        <li *ngFor="let doc of fund.documentLinks">
+          •
+          <a href="{{ doc.url }}" target="_blank" class="document-link">{{
+            doc.title
+          }}</a>
         </li>
-        <li id="performance">{{ fund.change1m }}</li>
-        <li id="performance">{{ fund.change3m }}</li>
-        <li id="performance">{{ fund.change3y }}</li>
-        <li class="title-hide" id="performance">{{ fund.currency }}</li>
-      </ul>
-      <ul class="more-content">
-        <li>Company: {{ fund.fundCompany }}</li>
-      </ul>
+      </ng-container>
+      <ng-template #noInfo>
+        <li>• No information available.</li>
+      </ng-template>
+    </ul>
   </article>
 </section>
