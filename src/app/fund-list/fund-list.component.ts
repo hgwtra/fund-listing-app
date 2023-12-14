@@ -14,6 +14,7 @@ import { FundItems } from '../models/fundItems';
 })
 export class FundListComponent {
   funds: FundItems[] = [];
+  filteredFunds: FundItems[] = [];
   searchedText: string = '';
   expandedIndex: number = -1; // -1 means no row is expanded
   expandedState: boolean = false;
@@ -51,7 +52,9 @@ export class FundListComponent {
           fundItem.rate = item.rate !== null ? item.rate : 'N/A';
           fundItem.yearHigh = item.yearHigh !== null ? item.yearHigh : 'N/A';
           fundItem.yearLow = item.yearLow !== null ? item.yearLow : 'N/A';
-          console.log('this is the fund documents', fundItem.documentLinks);
+          // fundItem.allowedForWatchList = item.permissions;
+          // console.log('this is the permissions', fundItem.allowedForWatchList);
+          //console.log('this is the fund documents', fundItem.documentLinks);
 
           //convert the values to number and round to 2 decimal places
           if (typeof fundItem.rate === 'number') {
@@ -81,7 +84,6 @@ export class FundListComponent {
   //Search a fund by name
   onSearchEntered(inputValue: string) {
     this.searchedText = inputValue;
-    //console.log('searched text', this.searchedText);
   }
 
   // Toggle for dropdown
@@ -91,5 +93,9 @@ export class FundListComponent {
     } else {
       this.expandedIndex = index;
     }
+  }
+
+  fundsChangedHandler(eventData: FundItems[]) {
+    this.filteredFunds = [...eventData];
   }
 }

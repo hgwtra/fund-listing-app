@@ -8,7 +8,10 @@
   <app-search (searchedTextChanged)="onSearchEntered($event)"></app-search>
 
   <!-- Filter By Fund Company and Type-->
-  <app-filter [funds]="funds"></app-filter>
+  <app-filter
+    [funds]="funds"
+    (fundsChanged)="fundsChangedHandler($event)"
+  ></app-filter>
 
   <!-- Row title -->
   <main class="row title">
@@ -25,7 +28,10 @@
   <!-- List of Funds -->
   <article
     class="row nfl"
-    *ngFor="let fund of funds | matchedFunds : searchedText; let i = index"
+    *ngFor="
+      let fund of filteredFunds | matchedFunds : searchedText;
+      let i = index
+    "
   >
     <ul>
       <li id="funds-name">

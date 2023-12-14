@@ -1,23 +1,30 @@
 <h3 class="header">Filter funds by:</h3>
 <div class="filter-row">
+  <!-- Filter by Company -->
   <div class="filter-box" id="byCompanies">
-    <select class="filter-select" [(ngModel)]="filterByFundCompany">
+    <select
+      [attr.placeholder]="'DEFAULT'"
+      class="filter-select"
+      [(ngModel)]="defaultFilterByFundCompany"
+      (change)="filter()"
+    >
       <option value="DEFAULT" selected>All Companies</option>
-      <ng-container *ngFor="let fund of funds">
-        <ng-container *ngIf="fund.fundCompany !== 'N/A'">
-          <option [ngValue]="fund.fundCompany">{{ fund.fundCompany }}</option>
-        </ng-container>
+      <ng-container *ngFor="let company of uniqueFundCompanies(funds)">
+        <option [ngValue]="company">{{ company }}</option>
       </ng-container>
     </select>
   </div>
 
+  <!-- Filter by Type -->
   <div class="filter-box">
-    <select class="filter-select" [(ngModel)]="filterByFundCompany">
+    <select
+      class="filter-select"
+      [(ngModel)]="defaultFilterByFundType"
+      (change)="filter()"
+    >
       <option value="DEFAULT" selected>All Types</option>
-      <ng-container *ngFor="let fund of funds">
-        <ng-container *ngIf="fund.fundType !== 'N/A'">
-          <option [ngValue]="fund.fundType">{{ fund.fundType }}</option>
-        </ng-container>
+      <ng-container *ngFor="let type of uniqueFundTypes(funds)">
+        <option [ngValue]="type">{{ type }}</option>
       </ng-container>
     </select>
   </div>

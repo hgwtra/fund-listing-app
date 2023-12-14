@@ -9,7 +9,7 @@
 .filter-box {
   position: relative;
   height: 55px;
-  max-width: 1000px;
+  max-width: 100%;
   width: 50%;
   background: #fff;
   border-radius: 8px;
@@ -20,6 +20,7 @@
 .filter-box#byCompanies {
   margin-right: 20px;
 }
+
 .filter-box select {
   height: 100%;
   width: 100%;
@@ -27,7 +28,7 @@
   font-size: 18px;
   font-weight: 400;
   border: none;
-  padding: 0 0px 0 60px;
+  padding-left: 20px;
   background-color: transparent;
 }
 
@@ -40,4 +41,5 @@
 option {
   font-size: 18px;
   font-weight: 300;
+  overflow: scroll;
 }

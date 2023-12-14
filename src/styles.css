@@ -32,6 +32,12 @@ body {
   position: relative;
 }
 
+.nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 /* Main title */
 .header {
   color: var(--light-bg);
@@ -39,6 +45,7 @@ body {
   justify-content: left;
   margin-top: 50px;
   font-weight: 300;
+  cursor: pointer;
 }
 
 /* Divider */
@@ -46,10 +53,14 @@ hr {
   width: 100%;
 }
 
-.icon {
+.icon, .heartIcon {
   background-color: transparent;
   border: none;
   cursor: pointer;
+  font-size: 18px;
+}
+
+.heartIcon {
   font-size: 18px;
 }
 
@@ -150,10 +161,6 @@ ul.more-content li {
   height: 45px;
   background-color: var(--light-bg);
   border-left: 3px solid lighten(var(--light-bg), 100%);
-}
-
-.nfl {
-  border-left: 3px solid darken(var(--teal), 30%);
 }
 
 .nfl:hover {

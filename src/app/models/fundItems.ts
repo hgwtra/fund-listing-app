@@ -12,4 +12,5 @@ export class FundItems {
     rate: number = 0;
     yearHigh: number = 0;
     yearLow: number = 0;
+    allowedForWatchList: boolean = false;
 }

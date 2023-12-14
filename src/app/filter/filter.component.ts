@@ -1,4 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  OnInit,
+} from '@angular/core';
 import { FundItems } from '../models/fundItems';
 
 @Component({
@@ -6,27 +13,51 @@ import { FundItems } from '../models/fundItems';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css'],
 })
-export class FilterComponent {
+export class FilterComponent implements OnChanges, OnInit {
   @Input() funds: FundItems[] = [];
   defaultFilterByFundCompany: string = 'DEFAULT';
+  defaultFilterByFundType: string = 'DEFAULT';
+  @Output() fundsChanged = new EventEmitter<FundItems[]>();
+
+  filteredFunds: FundItems[] = [];
 
   ngOnChanges() {
-    // console.log('funds in filter component', this.funds);
-    this.filterByFundCompany();
+    this.filter();
   }
 
-  // Filter funds by fund company
-  filterByFundCompany() {
-    if (this.defaultFilterByFundCompany === 'DEFAULT') {
-      // If 'All Companies' selected, show all funds
-      // console.log('Showing all funds');
-    } else {
-      // Filter funds based on the selected fund company
-      this.funds = this.funds.filter((fund) =>
-        fund.fundCompany.toLowerCase().includes(this.defaultFilterByFundCompany.toLowerCase())
+  ngOnInit() {
+    this.filter();
+  }
+
+  filter() {
+    this.filteredFunds = [...this.funds]; // Copy the original array
+
+    if (this.defaultFilterByFundCompany !== 'DEFAULT') {
+      this.filteredFunds = this.filteredFunds.filter((fund) =>
+        fund.fundCompany
+          .toLowerCase()
+          .includes(this.defaultFilterByFundCompany.toLowerCase())
       );
     }
+
+    if (this.defaultFilterByFundType !== 'DEFAULT') {
+      this.filteredFunds = this.filteredFunds.filter((fund) =>
+        fund.fundType
+          .toLowerCase()
+          .includes(this.defaultFilterByFundType.toLowerCase())
+      );
+    }
+
+    this.fundsChanged.emit(this.filteredFunds);
   }
 
-  // Filter funds by fund type
+  uniqueFundCompanies(funds: FundItems[]): string[] {
+    const uniqueCompanies = [...new Set(funds.map((fund) => fund.fundCompany))];
+    return uniqueCompanies.filter((company) => company !== 'N/A');
+  }
+
+  uniqueFundTypes(funds: FundItems[]): string[] {
+    const uniqueTypes = [...new Set(funds.map((fund) => fund.fundType))];
+    return uniqueTypes.filter((type) => type !== 'N/A');
+  }
 }
