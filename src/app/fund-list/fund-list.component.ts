@@ -1,6 +1,5 @@
 import {
   Component,
-  ChangeDetectorRef,
   EventEmitter,
   Output,
 } from '@angular/core';
@@ -12,13 +11,13 @@ import { FundItems } from '../models/fundItems';
   templateUrl: './fund-list.component.html',
   styleUrls: ['./fund-list.component.css'],
 })
+
 export class FundListComponent {
   funds: FundItems[] = [];
   filteredFunds: FundItems[] = [];
   searchedText: string = '';
   expandedIndex: number = -1; // -1 means no row is expanded
   expandedState: boolean = false;
-  @Output() fundsChanged = new EventEmitter<FundItems[]>();
 
   constructor(private fundService: FundService) {}
 
@@ -31,9 +30,7 @@ export class FundListComponent {
     this.fundService.getFunds().subscribe({
       next: (data) => {
         data = data[0].data; //get data from the api excluding the status
-        //console.log('this is the fetched data', data);
         this.funds = data.map((item: any) => {
-          //console.log(item);
           let fundItem = new FundItems();
           fundItem.fundName = item.fundName;
           fundItem.fundType = item.fundType;
@@ -53,10 +50,8 @@ export class FundListComponent {
           fundItem.yearHigh = item.yearHigh !== null ? item.yearHigh : 'N/A';
           fundItem.yearLow = item.yearLow !== null ? item.yearLow : 'N/A';
           // fundItem.allowedForWatchList = item.permissions;
-          // console.log('this is the permissions', fundItem.allowedForWatchList);
-          //console.log('this is the fund documents', fundItem.documentLinks);
 
-          //convert the values to number and round to 2 decimal places
+          //convert the rate, yearHigh and yearLow to 2 decimal places
           if (typeof fundItem.rate === 'number') {
             fundItem.rate = Number(fundItem.rate.toFixed(2));
           }
@@ -68,12 +63,9 @@ export class FundListComponent {
           if (typeof fundItem.yearLow === 'number') {
             fundItem.yearLow = Number(fundItem.yearLow.toFixed(2));
           }
-
           return fundItem;
         });
-        this.funds = [...this.funds];
-        this.fundsChanged.emit(this.funds);
-        //console.log('this is the emited data', this.funds);
+
       },
       error: (error: any) => {
         console.error('Error fetching api data', error);
@@ -95,6 +87,7 @@ export class FundListComponent {
     }
   }
 
+  // Filter funds by fund type
   fundsChangedHandler(eventData: FundItems[]) {
     this.filteredFunds = [...eventData];
   }

@@ -5,6 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'matchedFunds',
 })
+
 export class MatchedFundsPipe implements PipeTransform {
   transform(funds: any[], searchText: string): any[] {
     if (!funds || !searchText) {
@@ -21,7 +22,6 @@ export class MatchedFundsPipe implements PipeTransform {
       return [{ fundName: 'No fund found. Try searching again.' }];
     }
 
-    //return matched values
     return matchedFunds;
   }
 }

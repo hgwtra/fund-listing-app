@@ -1,5 +1,6 @@
 <!-- Main section -->
 <section class="wrapper">
+  
   <!-- Main title -->
   <h1 class="header">Funds Overview</h1>
   <hr />
@@ -45,6 +46,7 @@
         </button>
         {{ fund.fundName }}
       </li>
+
       <li
         class="title-hide"
         id="performance-1y"
@@ -55,6 +57,7 @@
       >
         {{ fund.change1y }} %
       </li>
+
       <li id="performance">{{ fund.change1m }}</li>
       <li id="performance">{{ fund.change3m }}</li>
       <li id="performance">{{ fund.change3y }}</li>
@@ -83,11 +86,13 @@
         <div class="label">Year Low:</div>
         {{ fund.yearLow }}
       </li>
+
       <li>
         <div class="label">Available for monthly saving?:</div>
         <span *ngIf="fund.availableForMonthlySaving; else noOption">Yes</span>
         <ng-template #noOption>No</ng-template>
       </li>
+      
       <li><div class="label">More information:</div></li>
       <ng-container
         *ngIf="fund.documentLinks && fund.documentLinks.length > 0; else noInfo"

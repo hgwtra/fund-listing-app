@@ -53,14 +53,10 @@ hr {
   width: 100%;
 }
 
-.icon, .heartIcon {
+.icon {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-size: 18px;
-}
-
-.heartIcon {
   font-size: 18px;
 }
 
@@ -92,14 +88,6 @@ hr {
   list-style: none;
   display: inline-block;
   box-sizing: border-box;
-}
-
-.title ul li {
-  padding: 15px 13px;
-  color: var(--dark-bg);
-}
-
-.row ul li {
   padding: 5px 10px;
 }
 
@@ -118,7 +106,7 @@ hr {
 
 /* Change colors depending on the performance */
 .text-red {
-  color: #FF4148;
+  color: #ff4148;
 }
 
 .text-green {
@@ -144,7 +132,7 @@ ul.more-content li {
 }
 
 .document-link {
-  color: var(--teal); 
+  color: var(--teal);
   text-decoration: underline;
 }
 
@@ -163,6 +151,12 @@ ul.more-content li {
   border-left: 3px solid lighten(var(--light-bg), 100%);
 }
 
+.title ul li {
+  font-size: 18px;
+  padding: 15px 13px;
+  color: var(--dark-bg);
+}
+
 .nfl:hover {
   border-left: 3px solid var(--teal);
 }
@@ -172,13 +166,13 @@ ul.more-content li {
   .wrapper {
     margin: 0;
   }
-  
+
   .row ul li#performance-1y {
-    display:none;
+    display: none;
   }
-  
+
   .row ul li.title-hide {
-    display:none;
+    display: none;
   }
 
   .row ul li#performance {
@@ -188,6 +182,4 @@ ul.more-content li {
   .row ul li#funds-name {
     width: 60%;
   }
-  
-
 }

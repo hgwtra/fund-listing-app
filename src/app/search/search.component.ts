@@ -10,7 +10,7 @@ export class SearchComponent {
   @Output()
   searchedTextChanged: EventEmitter<string> = new EventEmitter<string>();
 
-  //Search a fund by name
+  //Emit the searched text to the parent component
   onSearchChanged() {
     this.searchedTextChanged.emit(this.searchedText);
   }

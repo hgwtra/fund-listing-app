@@ -3,8 +3,7 @@ import {
   EventEmitter,
   Input,
   Output,
-  OnChanges,
-  OnInit,
+  OnChanges
 } from '@angular/core';
 import { FundItems } from '../models/fundItems';
 
@@ -13,19 +12,18 @@ import { FundItems } from '../models/fundItems';
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.css'],
 })
-export class FilterComponent implements OnChanges, OnInit {
-  @Input() funds: FundItems[] = [];
+export class FilterComponent implements OnChanges {
   defaultFilterByFundCompany: string = 'DEFAULT';
   defaultFilterByFundType: string = 'DEFAULT';
+
+  //get the original funds array from the parent component
+  @Input() funds: FundItems[] = [];
+  //emit the filtered funds array to the parent component
   @Output() fundsChanged = new EventEmitter<FundItems[]>();
 
   filteredFunds: FundItems[] = [];
 
   ngOnChanges() {
-    this.filter();
-  }
-
-  ngOnInit() {
     this.filter();
   }
 
@@ -51,8 +49,10 @@ export class FilterComponent implements OnChanges, OnInit {
     this.fundsChanged.emit(this.filteredFunds);
   }
 
+  //using set to remove duplicates
   uniqueFundCompanies(funds: FundItems[]): string[] {
     const uniqueCompanies = [...new Set(funds.map((fund) => fund.fundCompany))];
+    //filter out the N/A value
     return uniqueCompanies.filter((company) => company !== 'N/A');
   }
 
