@@ -52,16 +52,23 @@ export class FundListComponent {
 
           if (this.watchlistArray.length > 0) {
             //loop through the watchlist array and check if the fund is in the watchlist
-            //if the fund is in the watchlist, set the allowedForWatchList of that fund only to false
+            //if the fund is in the watchlist, set the allowedForWatchList = item.permissions.allowedForWatchlist = false
+            //else set the allowedForWatchList = item.permissions.allowedForWatchlist = true
             this.watchlistArray.forEach((element) => {
-              if (element === item.fundName) {
-                // console.log('each pair', element, item.fundName);
-                fundItem.allowedForWatchList = false;
+              if (
+                element === item.fundName &&
+                item.permissions.allowedForWatchlist === true
+              ) {
+                item.permissions.allowedForWatchlist = false;
+                fundItem.allowedForWatchList =
+                  item.permissions.allowedForWatchlist;
               } else {
-                fundItem.allowedForWatchList = item.permissions.allowedForWatchlist;
+                fundItem.allowedForWatchList =
+                  item.permissions.allowedForWatchlist;
               }
-              // console.log(fundItem.allowedForWatchList)
             });
+
+            //if the fund is not in the watchlist, set the allowedForWatchList = item.permissions.allowedForWatchlist = true
           } else {
             fundItem.allowedForWatchList = item.permissions.allowedForWatchlist;
           }
