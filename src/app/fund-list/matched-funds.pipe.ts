@@ -17,10 +17,6 @@ export class MatchedFundsPipe implements PipeTransform {
       fund.fundName.toLowerCase().includes(searchText.toLowerCase())
     );
 
-    //if no fund is found, return a message
-    if (matchedFunds.length === 0) {
-      return [{ fundName: 'No fund found. Try searching again.' }];
-    }
 
     return matchedFunds;
   }

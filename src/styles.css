@@ -167,6 +167,7 @@ ul.more-content li {
 .message {
   list-style: none;
   font-size: 18px;
+  margin-top: 20px;
 }
 
 .watchlist {

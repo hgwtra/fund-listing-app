@@ -2,8 +2,20 @@
 <section class="wrapper">
   <!-- Main title -->
   <div class="nav">
-    <h1 class="header main" (click)="toggleView('overview')" [ngClass]="{'active-view': currentView === 'overview'}">Funds Overview</h1>
-    <h1 class="header main" (click)="toggleView('watchlist')" [ngClass]="{'active-view': currentView === 'watchlist'}">My Watch List</h1>
+    <h1
+      class="header main"
+      (click)="toggleView('overview')"
+      [ngClass]="{ 'active-view': currentView === 'overview' }"
+    >
+      Funds Overview
+    </h1>
+    <h1
+      class="header main"
+      (click)="toggleView('watchlist')"
+      [ngClass]="{ 'active-view': currentView === 'watchlist' }"
+    >
+      My Watch List
+    </h1>
   </div>
   <hr />
 
@@ -77,8 +89,12 @@
           <!-- watch list -->
           <button class="heartIcon">
             <ng-container *ngIf="fund.allowedForWatchList === true">
-            <i (click)="addToWatchList()" class=" fa fa-regular fa-heart" style="color: #ffffff;"></i>
-          </ng-container>
+              <i
+                (click)="addToWatchList()"
+                class="fa fa-regular fa-heart"
+                style="color: #ffffff"
+              ></i>
+            </ng-container>
             <ng-container *ngIf="fund.allowedForWatchList === false">
               <i
                 (click)="removeFromWatchList()"
@@ -126,10 +142,20 @@
           </li>
         </ng-container>
         <ng-template #noInfo>
-          <li>•  No information available.</li>
+          <li>• No information available.</li>
         </ng-template>
       </ul>
     </article>
+    
+    <!-- Display the message when no funds are found -->
+    <div
+      *ngIf="
+        (funds | matchedFunds : searchedText).length === 0
+        || (filteredFunds | matchedFunds : searchedText).length === 0"
+        class="message"
+    >
+      No funds found. Try searching again.
+    </div>
   </div>
 
   <!-- Watch List View -->
@@ -139,12 +165,12 @@
         <li class="message">There is no fund in your watch list.</li>
       </ng-container>
       <ng-container *ngIf="watchlistArray.length > 0">
-      <li *ngFor="let fundName of watchlistArray" class="watchlist">
-        {{ fundName }}
-        <button class="rmv-btn" (click)="removeItemFromWatchList(fundName)">
-          Remove
-        </button>
-      </li>
+        <li *ngFor="let fundName of watchlistArray" class="watchlist">
+          {{ fundName }}
+          <button class="rmv-btn" (click)="removeItemFromWatchList(fundName)">
+            Remove
+          </button>
+        </li>
       </ng-container>
     </ul>
   </div>
