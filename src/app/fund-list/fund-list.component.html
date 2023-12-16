@@ -1,112 +1,151 @@
 <!-- Main section -->
 <section class="wrapper">
-  
   <!-- Main title -->
-  <h1 class="header">Funds Overview</h1>
+  <div class="nav">
+    <h1 class="header main" (click)="toggleView('overview')" [ngClass]="{'active-view': currentView === 'overview'}">Funds Overview</h1>
+    <h1 class="header main" (click)="toggleView('watchlist')" [ngClass]="{'active-view': currentView === 'watchlist'}">My Watch List</h1>
+  </div>
   <hr />
 
-  <!-- Search Bar -->
-  <app-search (searchedTextChanged)="onSearchEntered($event)"></app-search>
+  <!-- Overview View -->
+  <div *ngIf="currentView === 'overview'">
+    <!-- Search Bar -->
+    <app-search (searchedTextChanged)="onSearchEntered($event)"></app-search>
 
-  <!-- Filter By Fund Company and Type-->
-  <app-filter
-    [funds]="funds"
-    (fundsChanged)="fundsChangedHandler($event)"
-  ></app-filter>
+    <!-- Filter By Fund Company and Type-->
+    <app-filter
+      [funds]="funds"
+      (fundsChanged)="fundsChangedHandler($event)"
+    ></app-filter>
 
-  <!-- Row title -->
-  <main class="row title">
-    <ul>
-      <li id="funds-name">Funds</li>
-      <li id="performance-1y">Performance (1Y)</li>
-      <li id="performance">1M</li>
-      <li id="performance">3M</li>
-      <li id="performance">3Y</li>
-      <li class="title-hide" id="performance">Currency</li>
-    </ul>
-  </main>
+    <!-- Row title -->
+    <p>Click on the heart icon to add fund to your watch list.</p>
+    <main class="row title">
+      <ul>
+        <li id="funds-name">Funds</li>
+        <li id="performance-1y">Performance (1Y)</li>
+        <li id="performance">1M</li>
+        <li id="performance">3M</li>
+        <li id="performance">3Y</li>
+        <li class="title-hide" id="performance">Currency</li>
+      </ul>
+    </main>
 
-  <!-- List of Funds -->
-  <article
-    class="row nfl"
-    *ngFor="
-      let fund of filteredFunds | matchedFunds : searchedText;
-      let i = index
-    "
-  >
-    <ul>
-      <li id="funds-name">
-        <button (click)="toggleContent(i)" class="icon">
-          <ng-container *ngIf="expandedIndex !== i">
-            <i class="fa fa-solid fa-angle-right" style="color: #ffffff"></i>
-          </ng-container>
-          <ng-container *ngIf="expandedIndex === i">
-            <i class="fa fa-solid fa-angle-down" style="color: #ffffff"></i>
-          </ng-container>
-        </button>
-        {{ fund.fundName }}
-      </li>
-
-      <li
-        class="title-hide"
-        id="performance-1y"
-        [ngClass]="{
-          'text-red': fund.change1y < 0,
-          'text-green': fund.change1y > 0
-        }"
-      >
-        {{ fund.change1y }} %
-      </li>
-
-      <li id="performance">{{ fund.change1m }}</li>
-      <li id="performance">{{ fund.change3m }}</li>
-      <li id="performance">{{ fund.change3y }}</li>
-      <li class="title-hide" id="performance">{{ fund.currency }}</li>
-    </ul>
-
-    <!-- More information on fund -->
-    <ul class="more-content" *ngIf="expandedIndex === i">
-      <li>
-        <div class="label">Company:</div>
-        {{ fund.fundCompany }}
-      </li>
-      <li>
-        <div class="label">Type:</div>
-        {{ fund.fundType }}
-      </li>
-      <li>
-        <div class="label">Rate:</div>
-        {{ fund.rate }}%
-      </li>
-      <li>
-        <div class="label">Year High:</div>
-        {{ fund.yearHigh }}
-      </li>
-      <li>
-        <div class="label">Year Low:</div>
-        {{ fund.yearLow }}
-      </li>
-
-      <li>
-        <div class="label">Available for monthly saving?:</div>
-        <span *ngIf="fund.availableForMonthlySaving; else noOption">Yes</span>
-        <ng-template #noOption>No</ng-template>
-      </li>
-      
-      <li><div class="label">More information:</div></li>
-      <ng-container
-        *ngIf="fund.documentLinks && fund.documentLinks.length > 0; else noInfo"
-      >
-        <li *ngFor="let doc of fund.documentLinks">
-          •
-          <a href="{{ doc.url }}" target="_blank" class="document-link">{{
-            doc.title
-          }}</a>
+    <!-- List of Funds -->
+    <article
+      class="row nfl"
+      *ngFor="
+        let fund of filteredFunds | matchedFunds : searchedText;
+        let i = index
+      "
+    >
+      <ul>
+        <li id="funds-name">
+          <button (click)="toggleContent(i)" class="icon">
+            <ng-container *ngIf="expandedIndex !== i">
+              <i class="fa fa-solid fa-angle-right" style="color: #ffffff"></i>
+            </ng-container>
+            <ng-container *ngIf="expandedIndex === i">
+              <i class="fa fa-solid fa-angle-down" style="color: #ffffff"></i>
+            </ng-container>
+          </button>
+          {{ fund.fundName }}
         </li>
+
+        <li
+          class="title-hide"
+          id="performance-1y"
+          [ngClass]="{
+            'text-red': fund.change1y < 0,
+            'text-green': fund.change1y > 0
+          }"
+        >
+          {{ fund.change1y }} %
+        </li>
+
+        <li id="performance">{{ fund.change1m }}</li>
+        <li id="performance">{{ fund.change3m }}</li>
+        <li id="performance">{{ fund.change3y }}</li>
+        <li class="title-hide" id="performance">{{ fund.currency }}</li>
+      </ul>
+
+      <!-- More information on fund -->
+      <ul class="more-content" *ngIf="expandedIndex === i">
+        <li>
+          <div class="label">Company:</div>
+          {{ fund.fundCompany }}
+          <!-- watch list -->
+          <button class="heartIcon">
+            <ng-container *ngIf="fund.allowedForWatchList === true">
+            <i (click)="addToWatchList()" class=" fa fa-regular fa-heart" style="color: #ffffff;"></i>
+          </ng-container>
+            <ng-container *ngIf="fund.allowedForWatchList === false">
+              <i
+                (click)="removeFromWatchList()"
+                class="fa fa-regular fa-heart"
+                style="color: #29babe"
+              ></i>
+            </ng-container>
+          </button>
+        </li>
+        <li>
+          <div class="label">Type:</div>
+          {{ fund.fundType }}
+        </li>
+        <li>
+          <div class="label">Rate:</div>
+          {{ fund.rate }}%
+        </li>
+        <li>
+          <div class="label">Year High:</div>
+          {{ fund.yearHigh }}
+        </li>
+        <li>
+          <div class="label">Year Low:</div>
+          {{ fund.yearLow }}
+        </li>
+
+        <li>
+          <div class="label">Available for monthly saving?:</div>
+          <span *ngIf="fund.availableForMonthlySaving; else noOption">Yes</span>
+          <ng-template #noOption>No</ng-template>
+        </li>
+
+        <li><div class="label">More information:</div></li>
+        <ng-container
+          *ngIf="
+            fund.documentLinks && fund.documentLinks.length > 0;
+            else noInfo
+          "
+        >
+          <li *ngFor="let doc of fund.documentLinks">
+            •
+            <a href="{{ doc.url }}" target="_blank" class="document-link">{{
+              doc.title
+            }}</a>
+          </li>
+        </ng-container>
+        <ng-template #noInfo>
+          <li>•  No information available.</li>
+        </ng-template>
+      </ul>
+    </article>
+  </div>
+
+  <!-- Watch List View -->
+  <div *ngIf="currentView === 'watchlist'">
+    <ul class="toWatchList">
+      <ng-container *ngIf="watchlistArray.length === 0">
+        <li class="message">There is no fund in your watch list.</li>
       </ng-container>
-      <ng-template #noInfo>
-        <li>• No information available.</li>
-      </ng-template>
+      <ng-container *ngIf="watchlistArray.length > 0">
+      <li *ngFor="let fundName of watchlistArray" class="watchlist">
+        {{ fundName }}
+        <button class="rmv-btn" (click)="removeItemFromWatchList(fundName)">
+          Remove
+        </button>
+      </li>
+      </ng-container>
     </ul>
-  </article>
+  </div>
 </section>

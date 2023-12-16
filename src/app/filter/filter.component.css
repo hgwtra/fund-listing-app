@@ -30,6 +30,7 @@
   border: none;
   padding-left: 20px;
   background-color: transparent;
+  cursor: pointer; 
 }
 
 .filter-row {

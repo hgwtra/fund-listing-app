@@ -1,8 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FundService } from '../services/fund.service';
 import { FundItems } from '../models/fundItems';
 
@@ -11,18 +7,21 @@ import { FundItems } from '../models/fundItems';
   templateUrl: './fund-list.component.html',
   styleUrls: ['./fund-list.component.css'],
 })
-
 export class FundListComponent {
   funds: FundItems[] = [];
   filteredFunds: FundItems[] = [];
   searchedText: string = '';
   expandedIndex: number = -1; // -1 means no row is expanded
   expandedState: boolean = false;
+  currentView: string = 'overview';
+  watchlistArray: string[] = [];
 
   constructor(private fundService: FundService) {}
 
   ngOnInit(): void {
     this.displayFunds();
+    this.getWatchList();
+    this.getView();
   }
 
   //display funds and emit the data for filtering
@@ -32,6 +31,7 @@ export class FundListComponent {
         data = data[0].data; //get data from the api excluding the status
         this.funds = data.map((item: any) => {
           let fundItem = new FundItems();
+
           fundItem.fundName = item.fundName;
           fundItem.fundType = item.fundType;
           fundItem.fundCompany =
@@ -49,7 +49,22 @@ export class FundListComponent {
           fundItem.rate = item.rate !== null ? item.rate : 'N/A';
           fundItem.yearHigh = item.yearHigh !== null ? item.yearHigh : 'N/A';
           fundItem.yearLow = item.yearLow !== null ? item.yearLow : 'N/A';
-          // fundItem.allowedForWatchList = item.permissions;
+
+          if (this.watchlistArray.length > 0) {
+            //loop through the watchlist array and check if the fund is in the watchlist
+            //if the fund is in the watchlist, set the allowedForWatchList of that fund only to false
+            this.watchlistArray.forEach((element) => {
+              if (element === item.fundName) {
+                // console.log('each pair', element, item.fundName);
+                fundItem.allowedForWatchList = false;
+              } else {
+                fundItem.allowedForWatchList = item.permissions.allowedForWatchlist;
+              }
+              // console.log(fundItem.allowedForWatchList)
+            });
+          } else {
+            fundItem.allowedForWatchList = item.permissions.allowedForWatchlist;
+          }
 
           //convert the rate, yearHigh and yearLow to 2 decimal places
           if (typeof fundItem.rate === 'number') {
@@ -65,7 +80,6 @@ export class FundListComponent {
           }
           return fundItem;
         });
-
       },
       error: (error: any) => {
         console.error('Error fetching api data', error);
@@ -87,8 +101,73 @@ export class FundListComponent {
     }
   }
 
+  //Toggle for nav bar
+  toggleView(view: string): void {
+    this.currentView = view;
+    this.setView(view);
+  }
+
+  //set current view to local storage
+  setView(view: string) {
+    localStorage.setItem('currentView', view);
+  }
+
+  //get current view from local storage
+  getView() {
+    if (localStorage.getItem('currentView') === null) {
+      this.currentView = 'overview';
+    } else {
+      this.currentView = localStorage.getItem('currentView')!;
+    }
+  }
+
   // Filter funds by fund type
   fundsChangedHandler(eventData: FundItems[]) {
     this.filteredFunds = [...eventData];
+  }
+
+  // ADDING, GETTING AND REMOVING FROM WATCHLIST
+
+  // Add fund to watchlist
+  addToWatchList() {
+    let fundName = this.funds[this.expandedIndex].fundName;
+
+    // If the fund is already in the watchlist, do not add it again
+    if (this.watchlistArray.includes(fundName)) {
+      console.log('Fund already in watchlist');
+    } else {
+      this.watchlistArray.push(fundName);
+      localStorage.setItem('watchlist', JSON.stringify(this.watchlistArray));
+      this.funds[this.expandedIndex].allowedForWatchList = false;
+    }
+  }
+
+  removeFromWatchList() {
+    if (this.expandedIndex >= 0 && this.expandedIndex < this.funds.length) {
+      let fundName = this.funds[this.expandedIndex].fundName;
+      let index = this.watchlistArray.indexOf(fundName);
+
+      if (index !== -1) {
+        this.watchlistArray.splice(index, 1);
+        localStorage.setItem('watchlist', JSON.stringify(this.watchlistArray));
+        this.funds[this.expandedIndex].allowedForWatchList = true;
+      }
+    }
+  }
+
+  removeItemFromWatchList(fundName: string) {
+    let index = this.funds.findIndex((fund) => fund.fundName === fundName);
+
+    if (index !== -1) {
+      this.watchlistArray.splice(this.watchlistArray.indexOf(fundName), 1);
+      localStorage.setItem('watchlist', JSON.stringify(this.watchlistArray));
+      this.funds[index].allowedForWatchList = true;
+    }
+  }
+
+  getWatchList() {
+    this.watchlistArray = localStorage.getItem('watchlist')
+      ? JSON.parse(localStorage.getItem('watchlist')!)
+      : [];
   }
 }

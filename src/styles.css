@@ -3,9 +3,6 @@
 
 /* Colors */
 :root {
-  --blue: rgba(79, 192, 210, 1);
-  --green: rgba(82, 210, 154, 1);
-  --orange: rgba(235, 118, 85, 1);
   --yellow: #ffd24a;
   --dark-bg: #4a4a4a;
   --text: #b8b7b7;
@@ -48,12 +45,17 @@ body {
   cursor: pointer;
 }
 
+.header.main.active-view{
+color: var(--teal);
+}
+
 /* Divider */
 hr {
   width: 100%;
 }
 
-.icon {
+.icon,
+.heartIcon {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -138,7 +140,7 @@ ul.more-content li {
 
 /* Row titles */
 .title {
-  padding: 25px 0 5px 0;
+  padding: 5px 5px 15px 5px;
   height: 45px;
   font-size: 0;
   background-color: var(--light-bg);
@@ -161,6 +163,54 @@ ul.more-content li {
   border-left: 3px solid var(--teal);
 }
 
+/* Watch List */
+.message {
+  list-style: none;
+  font-size: 18px;
+}
+
+.watchlist {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 80px 10px 30px;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.rmv-btn {
+  align-items: center;
+  appearance: button;
+  background-color: #29babe;
+  border-radius: 8px;
+  border-style: none;
+  box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+  padding: 10px 21px;
+  text-align: center;
+  text-transform: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.rmv-btn:hover {
+  background-color: #28abb0;
+}
+
+.toWatchList {
+  margin-top: 50px;
+}
+
 /* Mobile */
 @media screen and (max-width: 767px) {
   .wrapper {
@@ -181,5 +231,13 @@ ul.more-content li {
 
   .row ul li#funds-name {
     width: 60%;
+  }
+
+  .toWatchList {
+    padding: 0;
+  }
+  .watchlist {
+    padding: 0;
+    padding-bottom: 10px;
   }
 }
