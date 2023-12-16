@@ -2,9 +2,9 @@
 
 This project was developed for the Crosskey Frontend Trainee position. The application utilizes a provided API.
 
-Hosted version: https://funds-listing-app.onrender.com/ (Note: The search might be a bit slow on the hosted version.)
+Hosted version: https://funds-listing-app.onrender.com/ 
 
-<img width="946" alt="Screenshot 2023-12-15 at 20 20 35" src="https://github.com/hgwtra/fund-listing-app/assets/100776787/c86f1487-69a0-4adf-8c3e-51c64afcfb83">
+<img width="970" alt="Screenshot 2023-12-16 at 21 46 44" src="https://github.com/hgwtra/fund-listing-app/assets/100776787/fce2224d-6312-45a9-9a29-de33ddaf9b47">
 
 
 ## Installation
